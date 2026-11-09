@@ -1,0 +1,12 @@
+---
+- name: stat wp-cli
+  stat: path=/usr/local/bin/wp
+  register: wp_stat
+
+- name: wp-cli.installed
+  get_url:
+    url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    dest: /usr/local/bin/wp
+  when: not wp_stat.stat.exists
+
+- file: path=/usr/local/bin/wp state=file mode=a+x

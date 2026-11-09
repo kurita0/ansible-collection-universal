@@ -1,0 +1,15 @@
+---
+- name: stat cachetool.phar
+  stat: path=/usr/local/bin/cachetool.phar
+  register: cachetool_phar_stat
+
+- name: Get cachetool.phar
+  get_url:
+    url: 'https://github.com/gordalina/cachetool/releases/latest/download/cachetool.phar'
+    dest: /usr/local/bin/cachetool.phar
+  when: not cachetool_phar_stat.stat.exists
+
+- name: Set permissions for cachetool.phar
+  file:
+    path: /usr/local/bin/cachetool.phar
+    mode: '0755'
